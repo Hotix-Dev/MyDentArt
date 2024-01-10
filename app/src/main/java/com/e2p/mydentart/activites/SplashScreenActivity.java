@@ -1,7 +1,6 @@
 package com.e2p.mydentart.activites;
 
 
-import static com.e2p.mydentart.helpers.ConstantConfig.ALL_CLIENTS;
 import static com.e2p.mydentart.helpers.Utils.showSnackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +18,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.e2p.mydentart.R;
 import com.e2p.mydentart.helpers.MySettings;
-import com.e2p.mydentart.models.Client;
 import com.e2p.mydentart.retrofit.RetrofitClient;
 import com.e2p.mydentart.retrofit.RetrofitInterface;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -97,7 +93,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     .into(ivSplashLogo);
 
             startDelay();
-            //loadingClients();
 
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -112,7 +107,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    Intent i = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                     finish();
@@ -124,54 +119,4 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
     }
-
-    /**********************************(  Loading Clients  )*************************************/
-    public void loadingClients() {
-
-        String URL = "Client/GetClient";
-
-        RetrofitInterface service = RetrofitClient.getClientApi().create(RetrofitInterface.class);
-        Call<ArrayList<Client>> apiCall = service.getAllClientsQuery(URL);
-
-        pbLoading.setVisibility(View.VISIBLE);
-        tvSplashFooter.setVisibility(View.VISIBLE);
-        tvSplashFooter.setText(getString(R.string.msg_loading_data));
-
-        apiCall.enqueue(new Callback<ArrayList<Client>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Client>> call, Response<ArrayList<Client>> response) {
-
-                pbLoading.setVisibility(View.GONE);
-                tvSplashFooter.setText("");
-                tvSplashFooter.setVisibility(View.GONE);
-
-                if (response.raw().code() == 200) {
-                    ALL_CLIENTS = response.body();
-                    Log.e(TAG, ALL_CLIENTS.size() + "");
-                }
-
-                mySettings.setFirstStart(false);
-                Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                finish();
-
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Client>> call, Throwable t) {
-                pbLoading.setVisibility(View.GONE);
-                tvSplashFooter.setVisibility(View.GONE);
-                tvSplashFooter.setText("");
-
-                mySettings.setFirstStart(false);
-                Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                finish();
-            }
-        });
-
-    }
-
 }

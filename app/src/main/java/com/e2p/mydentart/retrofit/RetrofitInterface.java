@@ -1,13 +1,12 @@
 package com.e2p.mydentart.retrofit;
 
-import com.e2p.mydentart.models.Client;
-import com.e2p.mydentart.models.Statement;
+import com.e2p.mydentart.models.BalanceClient;
+import com.e2p.mydentart.models.PrixPrestation;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface RetrofitInterface {
@@ -18,21 +17,11 @@ public interface RetrofitInterface {
 
     //Get All Clients service call
     @GET
-    Call<ArrayList<Client>> getAllClientsQuery(@Url String URL);
+    Call<ArrayList<BalanceClient>> getClientsBalanceQuery(@Url String URL);
 
-    //Get Client By Code service call
+    //Get All Clients service call
     @GET
-    Call<Client> getClientByCodeQuery(@Url String URL,
-                                                  @Query("Id") Integer Id,
-                                                  @Query("code") String code);
-
-    //Get All Statements service call
-    @GET
-    Call<ArrayList<Statement>> getAllStatementsQuery(@Url String URL,
-                                                      @Query("cabinetId") Integer cabinetId,
-                                                      @Query("clientId") Integer clientId,
-                                                      @Query("exerciceDebut") Integer exerciceDebut,
-                                                      @Query("exerciceFin") Integer exerciceFin);
+    Call<ArrayList<PrixPrestation>> getPrixPrestationsQuery(@Url String URL);
 
     /***
      ** POST ********************************************************************************************
