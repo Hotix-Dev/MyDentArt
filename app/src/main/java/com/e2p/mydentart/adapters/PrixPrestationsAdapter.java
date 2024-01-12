@@ -1,6 +1,7 @@
 package com.e2p.mydentart.adapters;
 
 
+import static android.graphics.Color.parseColor;
 import static com.e2p.mydentart.helpers.ConstantConfig.SELECTED_PRIX_PRESTATIONS;
 
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.e2p.mydentart.models.PrixPrestation;
@@ -32,7 +34,8 @@ public class PrixPrestationsAdapter extends RecyclerView.Adapter<PrixPrestations
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prix_prestation_row, parent, false);
+        //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prix_prestation_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prix_prestation_row_new, parent, false);
         return new ItemViewHolder(view);
     }
 
@@ -43,7 +46,17 @@ public class PrixPrestationsAdapter extends RecyclerView.Adapter<PrixPrestations
 
         holder.tvTitle.setText(model.getName());
         holder.tvTotal.setText(String.valueOf(model.getPrix()));
-        holder.cbxSelected.setChecked((SELECTED_PRIX_PRESTATIONS != null) && (SELECTED_PRIX_PRESTATIONS.contains(model)));
+
+        if (SELECTED_PRIX_PRESTATIONS.contains(model)) {
+            holder.rlMain.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimary, null));
+            holder.tvTitle.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_300, null));
+            holder.tvTotal.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.white, null));
+        } else {
+            holder.rlMain.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.white, null));
+            holder.tvTitle.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_700, null));
+            holder.tvTotal.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimary, null));
+        }
+
 
         holder.rlMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,11 +64,15 @@ public class PrixPrestationsAdapter extends RecyclerView.Adapter<PrixPrestations
 
                 if (SELECTED_PRIX_PRESTATIONS.contains(model)) {
                     SELECTED_PRIX_PRESTATIONS.remove(model);
+                    holder.rlMain.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.white, null));
+                    holder.tvTitle.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_700, null));
+                    holder.tvTotal.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimary, null));
                 } else {
                     SELECTED_PRIX_PRESTATIONS.add(model);
+                    holder.rlMain.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimary, null));
+                    holder.tvTitle.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_300, null));
+                    holder.tvTotal.setTextColor(ResourcesCompat.getColor(mContext.getResources(), R.color.white, null));
                 }
-
-                holder.cbxSelected.setChecked(SELECTED_PRIX_PRESTATIONS.contains(model));
 
                 notifyItemChanged(holder.getAdapterPosition());
             }
@@ -71,14 +88,14 @@ public class PrixPrestationsAdapter extends RecyclerView.Adapter<PrixPrestations
         private RelativeLayout rlMain;
         private AppCompatTextView tvTitle;
         private AppCompatTextView tvTotal;
-        private AppCompatCheckBox cbxSelected;
+        //private AppCompatCheckBox cbxSelected;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             rlMain = itemView.findViewById(R.id.rl_item_prix_prestation_main);
             tvTitle = itemView.findViewById(R.id.tv_item_prix_prestation_title);
             tvTotal = itemView.findViewById(R.id.tv_item_prix_prestation_total);
-            cbxSelected = itemView.findViewById(R.id.cbx_item_prix_prestation);
+            //cbxSelected = itemView.findViewById(R.id.cbx_item_prix_prestation);
         }
     }
 }
