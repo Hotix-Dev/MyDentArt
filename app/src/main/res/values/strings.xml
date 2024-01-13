@@ -38,6 +38,6 @@
     <string name="warnig_message_select_one">You have to select at least one!!!</string>
     <string name="text_prestations">PRESTATIONS</string>
     <string name="error_message_wrong_login">wrong login</string>
-    <string name="menu_prix_prestations">Prix Prestations</string>
+    <string name="menu_prix_prestations">Offre De Prix</string>
     <string name="menu_balance_clients">Balance Clients</string>
 </resources>

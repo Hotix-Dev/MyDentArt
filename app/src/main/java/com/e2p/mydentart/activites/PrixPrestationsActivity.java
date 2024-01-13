@@ -36,7 +36,7 @@ import retrofit2.Response;
 
 public class PrixPrestationsActivity extends AppCompatActivity {
 
-    private static final String TAG = "HOME_ACTIVITTY";
+    private static final String TAG = "PRESTATION_ACTIVITTY";
 
     private Toolbar toolbar;
     private MySettings mySettings;
@@ -48,7 +48,7 @@ public class PrixPrestationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_prix_prestations);
 
         bindViews();
         init();
@@ -76,7 +76,7 @@ public class PrixPrestationsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.prix_prestation_menu, menu);
         return true;
     }
 

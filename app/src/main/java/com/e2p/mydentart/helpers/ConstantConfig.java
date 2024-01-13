@@ -22,6 +22,7 @@ public class ConstantConfig {
     public static ArrayList<Client> ALL_CLIENTS = null;
     public static Client CURENT_CLIENT = null;
     public static Client  SELECTED_CLIENT = null;
+    public static BalanceClient  SELECTED_CLIENT_BALANCE = null;
 
     public static String  AB_TITLE = "";
 

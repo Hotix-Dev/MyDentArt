@@ -12,7 +12,7 @@
         <!-- Color Layout Left -->
         <RelativeLayout
             android:id="@+id/rl_color_layout_left"
-            android:layout_width="@dimen/_3sdp"
+            android:layout_width="@dimen/_10sdp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:background="@color/colorPrimaryDark" />
@@ -27,6 +27,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_10sdp"
             android:orientation="horizontal"
             android:weightSum="5">
 

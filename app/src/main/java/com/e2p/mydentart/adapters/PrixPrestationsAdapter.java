@@ -19,16 +19,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.e2p.mydentart.models.PrixPrestation;
 import com.e2p.mydentart.R;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PrixPrestationsAdapter extends RecyclerView.Adapter<PrixPrestationsAdapter.ItemViewHolder> {
 
     private ArrayList<PrixPrestation> mList;
     private Context mContext;
+    private NumberFormat formatter;
+    private DecimalFormatSymbols decimalFormatSymbols;
 
     public PrixPrestationsAdapter(Context context, ArrayList<PrixPrestation> mList) {
         this.mContext = context;
         this.mList = mList;
+
+        formatter = NumberFormat.getCurrencyInstance(Locale.US);
+        decimalFormatSymbols = ((DecimalFormat) formatter).getDecimalFormatSymbols();
+        decimalFormatSymbols.setCurrencySymbol("");
+        ((DecimalFormat) formatter).setDecimalFormatSymbols(decimalFormatSymbols);
+        formatter.setMinimumFractionDigits(3);
     }
 
     @NonNull
@@ -45,7 +57,7 @@ public class PrixPrestationsAdapter extends RecyclerView.Adapter<PrixPrestations
         PrixPrestation model = mList.get(position);
 
         holder.tvTitle.setText(model.getName());
-        holder.tvTotal.setText(String.valueOf(model.getPrix()));
+        holder.tvTotal.setText(formatter.format(model.getPrix()));
 
         if (SELECTED_PRIX_PRESTATIONS.contains(model)) {
             holder.rlMain.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.colorPrimary, null));
