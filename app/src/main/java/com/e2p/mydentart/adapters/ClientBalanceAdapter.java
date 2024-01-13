@@ -59,13 +59,13 @@ public class ClientBalanceAdapter extends RecyclerView.Adapter<ClientBalanceAdap
         holder.tvReg.setText(formatter.format(model.getReglement()));
         holder.tvBal.setText(formatter.format(model.getBalance()));
 
-        if ((model.getFacturation() == 0) && (model.getReglement() == 0) && (model.getBalance() == 0)) {
-            holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_500, null));
-        }
+//        if ((model.getFacturation() == 0) && (model.getReglement() == 0) && (model.getBalance() == 0)) {
+//            holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_500, null));
+//        }
 
-        if ((model.getFacturation() > 0) && (model.getReglement() == 0) && (model.getBalance() == 0)) {
-            holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.blue_500, null));
-        }
+//        if ((model.getFacturation() > 0) && (model.getReglement() == 0) && (model.getBalance() == 0)) {
+//            holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.blue_500, null));
+//        }
 
         if ((model.getFacturation() > 0) && (model.getReglement() > 0) && (model.getBalance() == 0)) {
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.green_500, null));
