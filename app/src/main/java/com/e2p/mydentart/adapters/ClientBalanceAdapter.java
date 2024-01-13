@@ -71,7 +71,7 @@ public class ClientBalanceAdapter extends RecyclerView.Adapter<ClientBalanceAdap
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.green_500, null));
         }
 
-        if ((model.getFacturation() > 0) && (model.getReglement() > 0) && (model.getBalance() < 0)) {
+        if (model.getBalance() < 0) {
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.red_500, null));
         }
 
