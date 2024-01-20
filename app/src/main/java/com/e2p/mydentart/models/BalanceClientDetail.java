@@ -7,9 +7,9 @@ import java.util.Date;
 
 public class BalanceClientDetail {
 
-    @SerializedName("Date facturation")
-    @Expose
-    private Date date_facturation;
+//    @SerializedName("Date facturation")
+//    @Expose
+//    private Date date_facturation;
     @SerializedName("Facturation")
     @Expose
     private Double facturation;
@@ -26,21 +26,21 @@ public class BalanceClientDetail {
     public BalanceClientDetail() {
     }
 
-    public BalanceClientDetail(Date date_facturation, Double facturation, Double reglement, String reference, Double solde) {
-        this.date_facturation = date_facturation;
-        this.facturation = facturation;
-        this.reglement = reglement;
-        this.reference = reference;
-        this.solde = solde;
-    }
+//    public BalanceClientDetail(Date date_facturation, Double facturation, Double reglement, String reference, Double solde) {
+//        this.date_facturation = date_facturation;
+//        this.facturation = facturation;
+//        this.reglement = reglement;
+//        this.reference = reference;
+//        this.solde = solde;
+//    }
 
-    public Date getDate_facturation() {
-        return date_facturation;
-    }
-
-    public void setDate_facturation(Date date_facturation) {
-        this.date_facturation = date_facturation;
-    }
+//    public Date getDate_facturation() {
+//        return date_facturation;
+//    }
+//
+//    public void setDate_facturation(Date date_facturation) {
+//        this.date_facturation = date_facturation;
+//    }
 
     public Double getFacturation() {
         return facturation;

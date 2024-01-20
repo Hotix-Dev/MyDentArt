@@ -2,7 +2,6 @@ package com.e2p.mydentart.activites;
 
 import static com.e2p.mydentart.helpers.ConstantConfig.AB_TITLE;
 import static com.e2p.mydentart.helpers.ConstantConfig.ALL_CLIENTS_BALANCES;
-import static com.e2p.mydentart.helpers.ConstantConfig.SELECTED_CLIENT_BALANCE;
 import static com.e2p.mydentart.helpers.Utils.showSnackbar;
 
 import androidx.appcompat.app.AlertDialog;
@@ -163,7 +162,7 @@ public class ClientsBalanceActivity extends AppCompatActivity {
 
                     ALL_CLIENTS_BALANCES = response.body();
 
-                    ClientBalanceAdapter _Adapter = new ClientBalanceAdapter(getApplicationContext(), ALL_CLIENTS_BALANCES);
+                    ClientBalanceAdapter _Adapter = new ClientBalanceAdapter(ClientsBalanceActivity.this, ALL_CLIENTS_BALANCES);
                     rvList.setAdapter(_Adapter);
                     rvList.setVisibility(View.VISIBLE);
 

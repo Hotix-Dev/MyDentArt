@@ -1,20 +1,23 @@
 package com.e2p.mydentart.adapters;
 
 
-import static com.e2p.mydentart.helpers.ConstantConfig.SELECTED_PRIX_PRESTATIONS;
+import static com.e2p.mydentart.helpers.ConstantConfig.SELECTED_CLIENT_BALANCE;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.e2p.mydentart.R;
+import com.e2p.mydentart.activites.BalanceDetailsActivity;
 import com.e2p.mydentart.models.BalanceClient;
 import com.e2p.mydentart.models.PrixPrestation;
 
@@ -78,6 +81,16 @@ public class ClientBalanceAdapter extends RecyclerView.Adapter<ClientBalanceAdap
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.green_500, null));
         }
 
+        holder.rlMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SELECTED_CLIENT_BALANCE = model;
+                notifyItemChanged(holder.getAdapterPosition());
+
+                Intent intent = new Intent(((AppCompatActivity)mContext) , BalanceDetailsActivity.class);
+                ((AppCompatActivity)mContext).startActivity(intent);
+            }
+        });
     }
 
     @Override
