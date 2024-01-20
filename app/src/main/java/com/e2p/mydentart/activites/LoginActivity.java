@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mInputValidation = new InputValidation(this);
 
-        //etUsername.setText("admin");
+        etUsername.setText("admin");
 
         tvAppName.setText(R.string.app_name);
 

@@ -214,7 +214,7 @@ public class BalanceDetailsActivity extends AppCompatActivity {
         AppCompatTextView tvReference = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_reference);
         AppCompatTextView tvBalance = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_balance);
 
-//        tvDate.setText(obj.getDate_facturation().toString());
+        tvDate.setText(obj.getDate());
         tvBilling.setText(formatter.format(obj.getFacturation()));
         tvSettlement.setText(formatter.format(obj.getReglement()));
         tvReference.setText(obj.getReference());
