@@ -10,18 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
@@ -76,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
 
         try {
-            //loadeImage();
             btnLogin.setEnabled(true);
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -84,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         try {
@@ -113,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         ivLoginLogo = (AppCompatImageView) findViewById(R.id.img_login_logo);
 
         kenBurns = (KenBurnsView) findViewById(R.id.ken_burns_images);
-        kenBurns.setImageResource(R.drawable.login_bg);
+        kenBurns.setImageResource(R.drawable.dentist_bg);
     }
 
     //This method is for init Views.
@@ -121,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mInputValidation = new InputValidation(this);
 
-        //loadeImage();
+        etUsername.setText("admin");
 
         tvAppName.setText(R.string.app_name);
 
@@ -143,13 +140,15 @@ public class LoginActivity extends AppCompatActivity {
                         if (etUsername.getText().toString().toUpperCase().trim().equals("ADMIN")) {
 
                             CURENT_CLIENT = new Client(-1, "ADMIN", "Admin", "", "", "", true);
-                            Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                            Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
                             startActivity(i);
                             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                             finish();
 
                         } else {
-                            login();
+                            showSnackbar(findViewById(android.R.id.content), getString(R.string.error_message_wrong_login));
+                            etUsername.setText("");
+                            //login();
                         }
 
                     }
@@ -232,47 +231,48 @@ public class LoginActivity extends AppCompatActivity {
 
     /**********************************(  Login  )*************************************/
     public void login() {
-        try {
-            btnLogin.setEnabled(false);
-            pbLogin.setVisibility(View.VISIBLE);
-            String Code = etUsername.getText().toString();
-            String URL = "Client/GetOne?";
-
-            RetrofitInterface service = RetrofitClient.getClientApi().create(RetrofitInterface.class);
-            Call<Client> apiCall = service.getClientByCodeQuery(URL, -1, Code);
-
-            apiCall.enqueue(new Callback<Client>() {
-                @Override
-                public void onResponse(Call<Client> call, Response<Client> response) {
-
-                    pbLogin.setVisibility(View.GONE);
-
-                    if (response.raw().code() == 200) {
-                        CURENT_CLIENT = response.body();
-                        Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                        startActivity(i);
-                        finish();
-                    } else {
-                        showSnackbar(findViewById(android.R.id.content), response.message());
-                        Log.e(TAG, response.raw().code() + "");
-                        btnLogin.setEnabled(true);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Client> call, Throwable t) {
-                    pbLogin.setVisibility(View.GONE);
-                    showSnackbar(findViewById(android.R.id.content), getString(R.string.error_message_server_down));
-                    btnLogin.setEnabled(true);
-                }
-            });
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-            showSnackbar(findViewById(android.R.id.content), getString(R.string.error_message_something_wrong));
-            btnLogin.setEnabled(true);
-        }
-
+//        try {
+//            btnLogin.setEnabled(false);
+//            pbLogin.setVisibility(View.VISIBLE);
+//            String Code = etUsername.getText().toString();
+//            String URL = "Client/GetOne?";
+//
+//            RetrofitInterface service = RetrofitClient.getClientApi().create(RetrofitInterface.class);
+//            Call<Client> apiCall = service.getClientByCodeQuery(URL, -1, Code);
+//
+//            apiCall.enqueue(new Callback<Client>() {
+//                @Override
+//                public void onResponse(Call<Client> call, Response<Client> response) {
+//
+//                    pbLogin.setVisibility(View.GONE);
+//
+//                    if (response.raw().code() == 200) {
+//                        CURENT_CLIENT = response.body();
+//                        CURENT_CLIENT.setAdmin(false);
+//                        SELECTED_CLIENT = CURENT_CLIENT;
+//                        Intent i = new Intent(getApplicationContext(), DashboardActivity.class);
+//                        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+//                        startActivity(i);
+//                        finish();
+//                    } else {
+//                        showSnackbar(findViewById(android.R.id.content), response.message());
+//                        Log.e(TAG, response.raw().code() + "");
+//                        btnLogin.setEnabled(true);
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Client> call, Throwable t) {
+//                    pbLogin.setVisibility(View.GONE);
+//                    showSnackbar(findViewById(android.R.id.content), getString(R.string.error_message_server_down));
+//                    btnLogin.setEnabled(true);
+//                }
+//            });
+//        } catch (Exception e) {
+//            Log.e(TAG, e.toString());
+//            showSnackbar(findViewById(android.R.id.content), getString(R.string.error_message_something_wrong));
+//            btnLogin.setEnabled(true);
+//        }
     }
 
 }
