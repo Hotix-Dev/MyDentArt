@@ -1,5 +1,6 @@
 package com.e2p.mydentart.activites;
 
+import static com.e2p.mydentart.helpers.ConstantConfig.ALL_CLIENTS_BALANCES;
 import static com.e2p.mydentart.helpers.ConstantConfig.CLIENT_BALANCE_DETAILS;
 import static com.e2p.mydentart.helpers.ConstantConfig.SELECTED_CLIENT_BALANCE;
 import static com.e2p.mydentart.helpers.Utils.showSnackbar;
@@ -10,6 +11,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -23,6 +26,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.e2p.mydentart.R;
+import com.e2p.mydentart.adapters.ClientBalanceAdapter;
+import com.e2p.mydentart.adapters.DetailBalanceAdapter;
 import com.e2p.mydentart.helpers.MySettings;
 import com.e2p.mydentart.models.BalanceClientDetail;
 import com.e2p.mydentart.retrofit.RetrofitClient;
@@ -45,15 +50,10 @@ public class BalanceDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private MySettings mySettings;
-
-    private NestedScrollView nsvMain;
-    private TableLayout tlCharges;
     private RelativeLayout emptyListView;
     private LinearLayoutCompat progressView;
     private AppCompatButton btnEmptyViewRefresh;
-
-    private NumberFormat formatter;
-    private DecimalFormatSymbols decimalFormatSymbols;
+    private RecyclerView rvList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +67,8 @@ public class BalanceDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         try {
-
+            rvList.setEnabled(true);
         } catch (Exception e) {
             Log.e(TAG, e.toString());
             showSnackbar(findViewById(android.R.id.content), getString(R.string.error_message_something_wrong));
@@ -105,10 +104,13 @@ public class BalanceDetailsActivity extends AppCompatActivity {
 
             toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-            nsvMain = (NestedScrollView) findViewById(R.id.nsv_main_container);
-            tlCharges = (TableLayout) findViewById(R.id.tl_balance_details);
             emptyListView = (RelativeLayout) findViewById(R.id.empty_list_view);
+
             btnEmptyViewRefresh = (AppCompatButton) findViewById(R.id.btn_empty_view_refresh);
+
+            rvList = (RecyclerView) findViewById(R.id.rv_detail);
+            rvList.setHasFixedSize(true);
+            rvList.setLayoutManager(new LinearLayoutManager(this));
 
             progressView = (LinearLayoutCompat) findViewById(R.id.loading_view);
 
@@ -132,12 +134,6 @@ public class BalanceDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(_Title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-            formatter = NumberFormat.getCurrencyInstance(Locale.US);
-            decimalFormatSymbols = ((DecimalFormat) formatter).getDecimalFormatSymbols();
-            decimalFormatSymbols.setCurrencySymbol("");
-            ((DecimalFormat) formatter).setDecimalFormatSymbols(decimalFormatSymbols);
-            formatter.setMinimumFractionDigits(3);
 
             btnEmptyViewRefresh.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,7 +161,7 @@ public class BalanceDetailsActivity extends AppCompatActivity {
 
         progressView.setVisibility(View.VISIBLE);
         emptyListView.setVisibility(View.GONE);
-        nsvMain.setVisibility(View.GONE);
+        rvList.setVisibility(View.GONE);
 
         Integer _ClientID = (SELECTED_CLIENT_BALANCE != null)
                 ? SELECTED_CLIENT_BALANCE.getId()
@@ -180,17 +176,16 @@ public class BalanceDetailsActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<BalanceClientDetail>> call, Response<ArrayList<BalanceClientDetail>> response) {
                 progressView.setVisibility(View.GONE);
                 if (response.raw().code() == 200) {
-                    nsvMain.setVisibility(View.VISIBLE);
+
                     CLIENT_BALANCE_DETAILS = response.body();
 
-                    for (BalanceClientDetail balance : CLIENT_BALANCE_DETAILS) {
-                        addRow(balance, tlCharges);
-                    }
+                    DetailBalanceAdapter _Adapter = new DetailBalanceAdapter(BalanceDetailsActivity.this, CLIENT_BALANCE_DETAILS);
+                    rvList.setAdapter(_Adapter);
+                    rvList.setVisibility(View.VISIBLE);
 
                 } else {
                     emptyListView.setVisibility(View.VISIBLE);
-                    nsvMain.setVisibility(View.GONE);
-                    showSnackbar(findViewById(android.R.id.content), response.message());
+                    rvList.setVisibility(View.GONE);
                 }
             }
 
@@ -198,33 +193,9 @@ public class BalanceDetailsActivity extends AppCompatActivity {
             public void onFailure(Call<ArrayList<BalanceClientDetail>> call, Throwable t) {
                 progressView.setVisibility(View.GONE);
                 emptyListView.setVisibility(View.VISIBLE);
-                nsvMain.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    public void addRow(BalanceClientDetail obj, TableLayout tab) {
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View mView = inflater.inflate(R.layout.item_table_balance_detail_row, null);
-
-        AppCompatTextView tvDate = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_date);
-        AppCompatTextView tvBilling = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_billing);
-        AppCompatTextView tvSettlement = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_settlement);
-        AppCompatTextView tvReference = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_reference);
-        AppCompatTextView tvBalance = (AppCompatTextView) mView.findViewById(R.id.tv_table_row_balance);
-
-        tvDate.setText(obj.getDate());
-        tvBilling.setText(formatter.format(obj.getFacturation()));
-        tvSettlement.setText(formatter.format(obj.getReglement()));
-        tvReference.setText(obj.getReference());
-        tvBalance.setText(formatter.format(obj.getSolde()));
-
-        TableRow tr = new TableRow(getApplicationContext());
-        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT));
-        tr.addView(mView);
-
-        tab.addView(tr);
-    }
 
 }
