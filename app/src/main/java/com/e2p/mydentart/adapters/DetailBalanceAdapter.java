@@ -60,10 +60,12 @@ public class DetailBalanceAdapter extends RecyclerView.Adapter<DetailBalanceAdap
         if (model.getFacturation() > 0) {
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.green_500, null));
             holder.tvHint.setText("F");
+            holder.tvAmmount.setText(formatter.format(model.getFacturation()));
         }
         else if (model.getReglement() > 0) {
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.red_500, null));
             holder.tvHint.setText("R");
+            holder.tvAmmount.setText(formatter.format(model.getReglement()));
         }
         else {
             holder.rlColor.setBackgroundColor(ResourcesCompat.getColor(mContext.getResources(), R.color.grey_500, null));
@@ -71,7 +73,6 @@ public class DetailBalanceAdapter extends RecyclerView.Adapter<DetailBalanceAdap
         }
 
         holder.tvTitle.setText(model.getDate());
-        holder.tvAmmount.setText(formatter.format(model.getFacturation()));
         holder.tvRef.setText(model.getReference());
         holder.tvSolde.setText(formatter.format(model.getSolde()));
 
